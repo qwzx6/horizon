@@ -1,0 +1,16 @@
+name: launcher
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: launcher
+      - run: cargo build --release --manifest-path launcher/Cargo.toml
+      - uses: actions/upload-artifact@v4
+        with:
+          name: launcher-windows
+          path: launcher/target/release/horizon-launcher.exe
